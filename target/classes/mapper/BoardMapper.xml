@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="board">
+  
+	<resultMap type="info" id="info">
+		<result column="USER_IDX" property="userIdx" />
+		<result column="USER_REGISTER_DATE" property="userRegisterDate" />
+		<result column="USER_NAME" property="userName" />
+		<result column="USER_SOCIAL_SECUNUM"
+			property="userSocialSecunum" />
+		<result column="USER_SEX" property="userSex" />
+		<result column="USER_COMP" property="userComp" />
+		<result column="USER_COMP_ENTERDATE"
+			property="userCompEnterdate" />
+		<result column="USER_DEPT" property="userDept" />
+		<result column="USER_SPOT" property="userSpot" />
+		<result column="USER_ARMY_SERV" property="userArmyServ" />
+		<result column="USER_MARITAL_STATUS"
+			property="userMaritalStatus" />
+		<result column="USER_ARMY_SERV_ENTER"
+			property="userArmyServEnter" />
+		<result column="USER_ARMY_SERV_LEAVE"
+			property="userArmyServLeave" />
+		<result column="USER_ARMY_SERV_PERIOD"
+			property="userArmyServPeriod" />
+		<result column="USER_TELNUM_WIRED" property="userTelnumWired" />
+		<result column="USER_TELNUM_WIRELESS"
+			property="userTelnumWireless" />
+		<result column="USER_EMAIL" property="userEmail" />
+		<result column="USER_ZIPCODE" property="userZipcode" />
+		<result column="USER_ADDRESS" property="userAddress" />
+		<collection property="userInfoCareer" resultMap="career" />
+		<collection property="userInfoEdu" resultMap="edu" />
+		<collection property="userInfoLicen" resultMap="licen" />
+		<collection property="userInfoQualifi" resultMap="qualifi" />
+		<collection property="userInfoSkill" resultMap="skill" />
+		<collection property="userInfoTraining"
+			resultMap="training" />
+	</resultMap>
+
+	<resultMap type="health" id="health">
+		<result column="USER_IDX" property="useridx" />
+		<result column="USER_BLOOD" property="blood" />
+		<result column="USER_WEIGHT" property="weight" />
+		<result column="USER_HIGHT" property="hight" />
+		<result column="USER_EYELEFT" property="eyeleft" />
+		<result column="USER_EYERIGHT" property="eyeright" />
+	</resultMap>
+
+	<resultMap type="career" id="career">
+		<result column="CAREER_IDX" property="careerIdx" />
+		<result column="USER_IDX" property="userIdx" />
+		<result column="CAREER_COMP_NAME" property="careerCompName" />
+		<result column="CAREER_ENTERDATE" property="careerEnterdate" />
+		<result column="CAREER_LEAVEDATE" property="careerLeavedate" />
+		<result column="CAREER_SPOT" property="careerSpot" />
+		<result column="CAREER_RESPONSIB" property="careerResponsib" />
+	</resultMap>
+
+	<resultMap type="edu" id="edu">
+		<result column="EDU_IDX" property="eduIdx" />
+		<result column="USER_IDX" property="userIdx" />
+		<result column="EDU_SCHOOL_NAME" property="eduSchoolName" />
+		<result column="EDU_STATUS" property="eduStatus" />
+		<result column="EDU_YEAR" property="eduYear" />
+		<result column="EDU_MONTH" property="eduMonth" />
+	</resultMap>
+
+	<resultMap type="licen" id="licen">
+		<result column="LICEN_IDX" property="licenIdx" />
+		<result column="USER_IDX" property="UserIdx" />
+		<result column="LICEN_NAME" property="licenName" />
+		<result column="LICEN_SKILL_LEVEL" property="licenSkillLevel" />
+	</resultMap>
+
+	<resultMap type="qualifi" id="qualifi">
+		<result column="QUALIFI_IDX" property="qualifiIdx" />
+		<result column="USER_IDX" property="userIdx" />
+		<result column="QUALIFI_NAME" property="qualifiName" />
+		<result column="QUALIFI_GETDATE" property="qualifiGetdate" />
+	</resultMap>
+
+	<resultMap type="skill" id="skill">
+		<result column="SKILL_IDX" property="skillIdx" />
+		<result column="USER_IDX" property="userIdx" />
+		<result column="SKILL_PROJECT_NAME" property="skillProjectName" />
+		<result column="SKILL_STARTDATE" property="skillStartdate" />
+		<result column="SKILL_ENDDATE" property="skillEnddate" />
+		<result column="SKILL_CUSTOMER_COMP"
+			property="skillCustomerComp" />
+		<result column="SKILL_WORK_COMP" property="skillWorkComp" />
+		<result column="SKILL_APPLIED" property="skillApplied" />
+		<result column="SKILL_INDUSTRY" property="skillIndustry" />
+		<result column="SKILL_ROLE" property="skillRole" />
+		<result column="SKILL_MODEL" property="skillModel" />
+		<result column="SKILL_OS" property="skillOs" />
+		<result column="SKILL_LANG" property="skillLang" />
+		<result column="SKILL_DBMS" property="skillDbms" />
+		<result column="SKILL_COMM" property="skillComm" />
+		<result column="SKILL_TOOL" property="skillTool" />
+		<result column="SKILL_ETC" property="skillEtc" />
+	</resultMap>
+
+	<resultMap type="training" id="training">
+		<result column="TRAINING_IDX" property="trainingIdx" />
+		<result column="USER_IDX" property="userIdx" />
+		<result column="TRAINING_NAME" property="trainingName" />
+		<result column="TRAINING_STARTDATE"
+			property="trainingStartdate" />
+		<result column="TRAINING_ENDDATE" property="trainingEnddate" />
+		<result column="TRAINING_AGENCY" property="trainingAgency" />
+	</resultMap>
+  
+  <sql id="userListWhere">
+		<where>
+			<if
+				test="findkey != null and findkey != ''">
+				<choose>
+					<when test="findkey == 'userName'">
+						user_name LIKE '%' || #{findvalue} || '%'
+					</when>
+					<when test="findkey == 'userComp'">
+						user_comp LIKE '%' || #{findvalue} || '%'
+					</when>
+					<when test="findkey == 'userDept'">
+						user_dept LIKE '%' || #{findvalue} || '%'
+					</when>
+					<when test="findkey == 'userAddr'">
+						user_address LIKE '%' || #{findvalue} || '%'
+					</when>
+					<when test="findkey == 'findcareer'">
+						AND c.career_date>=#{findvalue}
+					</when>
+				
+
+				</choose>
+
+			</if>
+			
+			<choose>
+				<when test="genderSelect == '남성'">
+					AND U.USER_SEX=#{genderSelect}
+				</when>
+				<when test="genderSelect == '여성'">
+					AND U.USER_SEX=#{genderSelect}
+				</when>
+			</choose>
+
+			<!-- 결혼여부 if 로 추가할것. -->
+			<choose>
+				<when test="userMaritalStatusSelect == '미혼'">
+					AND U.USER_MARITAL_STATUS = #{userMaritalStatusSelect}
+				</when>
+				<when test="userMaritalStatusSelect == '기혼'">
+					AND U.USER_MARITAL_STATUS = #{userMaritalStatusSelect}
+				</when>
+			</choose>
+
+		</where>
+	</sql>
+  
+  
+  
+  		<select id="boardlist" resultType="hashmap" parameterType="topia.com.prac.entity.Page">
+  		SELECT * FROM
+		(SELECT ROWNUM AS RNUM, A.* FROM
+			(SELECT DISTINCT
+					u.user_idx
+					, u.user_name
+					, u.user_comp
+					, u.user_dept
+					,
+					to_char(u.user_register_date, 'yyyy-mm-dd HH24:MI:SS') AS
+					userRegisterDate
+					, u.user_sex
+					, c.career_date
+				FROM
+				user_info u
+				LEFT OUTER
+				JOIN
+				user_info_skill s
+				ON u.user_idx=s.user_idx
+				LEFT OUTER JOIN
+				(select
+				user_idx
+				,round(abs(sum((nvl(trunc(skill_startdate),sysdate) -
+				nvl(trunc(skill_enddate),sysdate))/365))) as career_date
+				from
+				user_info_skill group by user_idx) c
+				ON s.user_idx=c.user_idx
+		     <include refid="userListWhere"/>
+		        ORDER BY user_idx DESC
+			)A
+		)
+			WHERE RNUM BETWEEN #{startNum} AND #{endNum}
+  		</select>
+  		
+  		<select id="boardSelectList" resultType="hashmap" >
+  		SELECT * FROM
+		(SELECT ROWNUM AS RNUM, A.* FROM
+			(SELECT DISTINCT
+					u.user_idx
+					, u.user_name
+					, u.user_comp
+					, u.user_dept
+					,
+					to_char(u.user_register_date, 'yyyy-mm-dd HH24:MI:SS') AS
+					userRegisterDate
+					, u.user_sex
+					, c.career_date
+				FROM
+				user_info u
+				LEFT OUTER
+				JOIN
+				user_info_skill s
+				ON u.user_idx=s.user_idx
+				LEFT OUTER JOIN
+				(select
+				user_idx
+				,round(abs(sum((nvl(trunc(skill_startdate),sysdate) -
+				nvl(trunc(skill_enddate),sysdate))/365))) as career_date
+				from
+				user_info_skill group by user_idx) c
+				ON s.user_idx=c.user_idx
+		        	<include refid="userListWhere"/>
+		        ORDER BY user_idx DESC
+			)A
+		)
+			WHERE RNUM BETWEEN #{startNum} AND #{endNum}
+  		</select>
+  		
+  		
+  		<select id = "getTotalCnt" resultType="int">
+  			select count(*) from user_info
+  		</select>
+  		
+  		<select id = "cnt" resultType="int">
+  				SELECT count(*) FROM
+		(SELECT ROWNUM AS RNUM, A.* FROM
+			(SELECT DISTINCT
+					u.user_idx
+					, u.user_name
+					, u.user_comp
+					, u.user_dept
+					,
+					to_char(u.user_register_date, 'yyyy-mm-dd HH24:MI:SS') AS
+					userRegisterDate
+					, u.user_sex
+					, c.career_date
+				FROM
+				user_info u
+				LEFT OUTER
+				JOIN
+				user_info_skill s
+				ON u.user_idx=s.user_idx
+				LEFT OUTER JOIN
+				(select
+				user_idx
+				,round(abs(sum((nvl(trunc(skill_startdate),sysdate) -
+				nvl(trunc(skill_enddate),sysdate))/365))) as career_date
+				from
+				user_info_skill group by user_idx) c
+				ON s.user_idx=c.user_idx
+		        	<include refid="userListWhere"/>
+		        ORDER BY user_idx DESC
+			)A
+		)
+  		</select>
+  </mapper>

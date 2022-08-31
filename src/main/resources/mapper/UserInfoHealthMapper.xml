@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="health">
+<!-- RESULTMAP : select 결과값 저장 형식? -->
+	<resultMap type="health" id="health">
+		<result column="USER_IDX" property="userIdx" />
+		<result column="USER_BLOOD" property="blood" />
+		<result column="USER_WEIGHT" property="weight" />
+		<result column="USER_HIGHT" property="hight" />
+		<result column="USER_EYELEFT" property="eyeleft" />
+		<result column="USER_EYERIGHT" property="eyeright" />
+	</resultMap>
+	<!-- 개인 이력 추가 테이블 데이터 등록 -->
+	<insert id="insert" parameterType="object"
+		useGeneratedKeys="true" keyProperty="userIdx">
+		<!-- 테이블 마지막 생성된 idx번호 가져오기 -->
+		<selectKey keyProperty="userIdx" resultType="Integer"
+			order="BEFORE">
+			SELECT USER_IDX FROM (
+			SELECT USER_IDX
+			FROM USER_INFO ORDER BY USER_IDX
+			DESC
+			)
+			WHERE ROWNUM=1
+		</selectKey>
+		<!-- 데이터 유무 확인 -->
+		INSERT INTO USER_INFO_HEALTH(user_Idx
+		<if test="blood != null">,USER_BLOOD</if>
+		<if test="weight != null">,USER_WEIGHT</if>
+		<if test="hight != null">,USER_HIGHT</if>
+		<if test="eyeleft != null">,USER_EYELEFT</if>
+		<if test="eyeright != null">,USER_EYERIGHT</if>
+		)
+			VALUES(
+			#{userIdx}
+			<if test="blood != null">,#{blood[0]}</if>
+			<if test="weight != null">,#{weight[0]}</if>
+			<if test="hight != null">,#{hight[0]}</if>
+			<if test="eyeleft != null">,#{eyeleft[0]}</if>
+			<if test="eyeright != null">,#{eyeright[0]}</if>
+			)
+
+	</insert>
+
+
+<select id="selectone" resultType="hashmap">
+	select * from user_info_health where user_idx=
+	<![CDATA[
+		#{conUserIdx}
+	]]>
+</select>
+
+<delete id="delete">
+	delete from user_info_health where user_idx=
+	<![CDATA[
+		#{userIdx}
+	]]>
+</delete>
+</mapper>
